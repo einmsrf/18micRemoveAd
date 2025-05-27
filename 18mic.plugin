@@ -1,13 +1,8 @@
-#!name=18mic.vip去广告插件
-#!desc=拦截18mic.vip广告请求并移除class="div-bf-pv"和class="hidden-lg"的div元素
-#!author=YourName
-#!version=1.4
-#!icon=https://example.com/adblock-icon.png
-#!min-loon=2.1.0
+#!name=18Comic 去广告插件
+#!desc=移除 18comic.vip 网页中的广告 div（class=partial-item）
+#!author=ChatGPT
+#!homepage=https://18comic.vip
+#!version=1.0
 
 [Script]
-http-request ^https?://.*\.18mic\.vip/.* script-code=const adDomains = ["ads.18mic.vip", "adserver.18mic.vip", "banner.18mic.vip"];\nif ($request.url) {\n    let url = $request.url;\n    let isAdRequest = adDomains.some(domain => url.includes(domain));\n    if (isAdRequest) {\n        console.log("拦截广告请求: " + url);\n        $done({ status: 200, body: "" });\n    } else {\n        $done({});\n    }\n}, requires-body=true, timeout=10, tag=18micAdBlockRequest
-http-response ^https?://.*\.18mic\.vip/.* script-code=const adClassNames = ["div-bf-pv", "hidden-lg"];\nif ($response.body) {\n    let body = $response.body;\n    adClassNames.forEach(className => {\n        let regex = new RegExp(`<div[^>]*class\\s*=\\s*['"][^'"]*${className}[^'"]*['"][^>]*>.*?<\\/div>`, 'gis');\n        body = body.replace(regex, '');\n        console.log("移除广告 div: " + className);\n    });\n    $done({ body: body });\n} else {\n    $done({});\n}, requires-body=true, timeout=10, tag=18micAdBlockResponse
-
-[MITM]
-hostname = *.18mic.vip, ads.18mic.vip, adserver.18mic.vip
+http-response ^https?:\/\/.*\.?18comic\.vip\/.* requires-body=true, script-path=https://raw.githubusercontent.com/your-username/loon-scripts/main/remove_ad.js, tag=18Comic去广告
