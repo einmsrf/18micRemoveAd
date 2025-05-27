@@ -5,4 +5,4 @@
 #!version=1.0
 
 [Script]
-http-response ^https?:\/\/.*\.?18comic\.vip\/.* requires-body=true, script-path=https://raw.githubusercontent.com/your-username/loon-scripts/main/remove_ad.js, tag=18Comic去广告
+http-response ^https?:\/\/.*\.?18comic\.vip\/.* requires-body=true, script-path=https://raw.githubusercontent.com/einmsrf/18micRemoveAd/refs/heads/main/18comicRemoveAd.js, tag=18Comic去广告
