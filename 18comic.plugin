@@ -1,9 +1,9 @@
 #!name=18Comic 去广告插件
-#!desc=移除 18comic.vip 
-#!author=ChatGPT
+#!desc=移除 18comic.vip 网页中的 div-bf-pv 和 hidden-lg 广告
+#!author=Grok (xAI)
 #!homepage=https://18comic.vip
-#!version=1.0
+#!version=1.1
 #!icon=https://18comic.vip/favicon.ico
 
 [Script]
-http-response ^https?:\/\/.*\.?18comic\.vip\/.* requires-body=true, script-path=https://raw.githubusercontent.com/einmsrf/18micRemoveAd/refs/heads/main/18comicRemoveAd.js, tag=18Comic去广告
+http-response ^https?://.*\.?18comic\.vip/.* requires-body=true, max-size=1048576, script-path=https://raw.githubusercontent.com/einmsrf/18micRemoveAd/refs/heads/main/18comicRemoveAd.js, tag=18Comic去广告
