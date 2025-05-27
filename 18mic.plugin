@@ -1,0 +1,17 @@
+#!name=18mic.vip去广告插件
+#!desc=拦截18mic.vip广告请求并移除class="div-bf-pv"和class="hidden-lg"的div元素
+#!author=YourName
+#!version=1.3
+#!icon=https://example.com/adblock-icon.png
+#!min-loon=2.1.0
+
+[Script]
+http-request ^https?://.*\.18mic\.vip/.* script-path=18mic-adblock.js, requires-body=true, timeout=10, tag=18micAdBlockRequest
+http-response ^https?://.*\.18mic\.vip/.* script-path=18mic-adblock.js, requires-body=true, timeout=10, tag=18micAdBlockResponse
+
+[MITM]
+hostname = *.18mic.vip, ads.18mic.vip, adserver.18mic.vip
+
+[Script]
+18mic-adblock.js = type=http-request, pattern=^https?://.*\.18mic\.vip/.*, script-code=const adDomains = ["ads.18mic.vip", "adserver.18mic.vip", "banner.18mic.vip"];\nconst adClassNames = ["div-bf-pv", "hidden-lg"];\n\nif ($request.url) {\n    let url = $request.url;\n    let isAdRequest = adDomains.some(domain => url.includes(domain));\n    if (isAdRequest) {\n        console.log("拦截广告请求: " + url);\n        $done({ status: 200, body: "" });\n    } else {\n        $done({});\n    }\n} else if ($response.body) {\n    let body = $response.body;\n    adClassNames.forEach(className => {\n        let regex = new RegExp(`<div[^>]*class\\s*=\\s*['"][^'"]*${className}[^'"]*['"][^>]*>.*?<\\/div>`, 'gis');\n        body = body.replace(regex, '');\n        console.log("移除广告 div: " + className);\n    });\n    $done({ body: body });\n} else {\n    $done({});\n}
+18mic-adblock.js = type=http-response, pattern=^https?://.*\.18mic\.vip/.*, script-code=const adDomains = ["ads.18mic.vip", "adserver.18mic.vip", "banner.18mic.vip"];\nconst adClassNames = ["div-bf-pv", "hidden-lg"];\n\nif ($request.url) {\n    let url = $request.url;\n    let isAdRequest = adDomains.some(domain => url.includes(domain));\n    if (isAdRequest) {\n        console.log("拦截广告请求: " + url);\n        $done({ status: 200, body: "" });\n    } else {\n        $done({});\n    }\n} else if ($response.body) {\n    let body = $response.body;\n    adClassNames.forEach(className => {\n        let regex = new RegExp(`<div[^>]*class\\s*=\\s*['"][^'"]*${className}[^'"]*['"][^>]*>.*?<\\/div>`, 'gis');\n        body = body.replace(regex, '');\n        console.log("移除广告 div: " + className);\n    });\n    $done({ body: body });\n} else {\n    $done({});\n}
